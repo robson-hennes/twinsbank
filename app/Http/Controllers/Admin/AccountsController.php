@@ -11,16 +11,56 @@ use App\Models\Agency;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 
 class AccountsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('account_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $accounts = Account::with(['agency'])->get();
+        if ($request->ajax()) {
+            $query = Account::with(['agency'])->select(sprintf('%s.*', (new Account())->table));
+            $table = Datatables::of($query);
 
-        return view('admin.accounts.index', compact('accounts'));
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'account_show';
+                $editGate = 'account_edit';
+                $deleteGate = 'account_delete';
+                $crudRoutePart = 'accounts';
+
+                return view('partials.datatablesActions', compact(
+                'viewGate',
+                'editGate',
+                'deleteGate',
+                'crudRoutePart',
+                'row'
+            ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : '';
+            });
+            $table->editColumn('name', function ($row) {
+                return $row->name ? $row->name : '';
+            });
+            $table->addColumn('agency_name', function ($row) {
+                return $row->agency ? $row->agency->name : '';
+            });
+
+            $table->editColumn('agency.agency_code', function ($row) {
+                return $row->agency ? (is_string($row->agency) ? $row->agency : $row->agency->agency_code) : '';
+            });
+
+            $table->rawColumns(['actions', 'placeholder', 'agency']);
+
+            return $table->make(true);
+        }
+
+        return view('admin.accounts.index');
     }
 
     public function create()

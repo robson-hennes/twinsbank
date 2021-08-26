@@ -9,7 +9,7 @@ class AddRelationshipFieldsToAgenciesTable extends Migration
     public function up()
     {
         Schema::table('agencies', function (Blueprint $table) {
-            $table->unsignedBigInteger('bank_id')->nullable();
+            $table->unsignedBigInteger('bank_id');
             $table->foreign('bank_id', 'bank_fk_4696900')->references('id')->on('banks');
         });
     }

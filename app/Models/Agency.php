@@ -29,11 +29,6 @@ class Agency extends Model
         'deleted_at',
     ];
 
-    public function agencyAccounts()
-    {
-        return $this->hasMany(Account::class, 'agency_id', 'id');
-    }
-
     public function bank()
     {
         return $this->belongsTo(Bank::class, 'bank_id');

@@ -182,7 +182,7 @@ return [
     'csv_file_to_import'             => 'Arquivo CSV para importar',
     'csvImport'                      => 'Importação CSV',
     'current_password'               => 'Senha atual',
-    'custom_controller_index'        => 'Controller personalizada',
+    'custom_controller_index'        => 'Controle personalizado',
     'customer'                       => 'Cliente',
     'customers'                      => 'Clientes',
     'deleted_at'                     => 'Excluido em',
