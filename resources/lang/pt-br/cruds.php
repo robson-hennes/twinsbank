@@ -2,8 +2,8 @@
 
 return [
     'userManagement' => [
-        'title'          => 'Gerenciar Usuários',
-        'title_singular' => 'Gerenciar Usuários',
+        'title'          => 'Gestão Admin',
+        'title_singular' => 'Gestão Admin',
     ],
     'permission' => [
         'title'          => 'Permissões',
@@ -22,8 +22,8 @@ return [
         ],
     ],
     'role' => [
-        'title'          => 'Regras',
-        'title_singular' => 'Regras',
+        'title'          => 'Hierarquias',
+        'title_singular' => 'Hierarquia',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => ' ',
@@ -66,8 +66,8 @@ return [
         ],
     ],
     'bank' => [
-        'title'          => 'Banks',
-        'title_singular' => 'Bank',
+        'title'          => 'Bancos',
+        'title_singular' => 'Banco',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => ' ',
@@ -184,12 +184,12 @@ return [
         ],
     ],
     'bankManagement' => [
-        'title'          => 'Bank Management',
-        'title_singular' => 'Bank Management',
+        'title'          => 'Gestão Bancária',
+        'title_singular' => 'Gestão Bancárium',
     ],
     'agency' => [
-        'title'          => 'Agencies',
-        'title_singular' => 'Agency',
+        'title'          => 'Agências',
+        'title_singular' => 'Agência',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => ' ',
@@ -208,8 +208,8 @@ return [
         ],
     ],
     'account' => [
-        'title'          => 'Accounts',
-        'title_singular' => 'Account',
+        'title'          => 'Contas',
+        'title_singular' => 'Conta',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => ' ',
@@ -226,7 +226,7 @@ return [
         ],
     ],
     'bankReport' => [
-        'title'          => 'Bank Report',
-        'title_singular' => 'Bank Report',
+        'title'          => 'Demonstrativo',
+        'title_singular' => 'Demonstrativo',
     ],
 ];

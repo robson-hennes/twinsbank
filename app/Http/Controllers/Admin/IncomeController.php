@@ -12,16 +12,59 @@ use App\Models\IncomeCategory;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 
 class IncomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('income_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $incomes = Income::with(['income_category', 'account'])->get();
+        if ($request->ajax()) {
+            $query = Income::with(['income_category', 'account'])->select(sprintf('%s.*', (new Income())->table));
+            $table = Datatables::of($query);
 
-        return view('admin.incomes.index', compact('incomes'));
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'income_show';
+                $editGate = 'income_edit';
+                $deleteGate = 'income_delete';
+                $crudRoutePart = 'incomes';
+
+                return view('partials.datatablesActions', compact(
+                'viewGate',
+                'editGate',
+                'deleteGate',
+                'crudRoutePart',
+                'row'
+            ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : '';
+            });
+            $table->addColumn('income_category_name', function ($row) {
+                return $row->income_category ? $row->income_category->name : '';
+            });
+
+            $table->editColumn('amount', function ($row) {
+                return $row->amount ? $row->amount : '';
+            });
+            $table->editColumn('description', function ($row) {
+                return $row->description ? $row->description : '';
+            });
+            $table->addColumn('account_name', function ($row) {
+                return $row->account ? $row->account->name : '';
+            });
+
+            $table->rawColumns(['actions', 'placeholder', 'income_category', 'account']);
+
+            return $table->make(true);
+        }
+
+        return view('admin.incomes.index');
     }
 
     public function create()

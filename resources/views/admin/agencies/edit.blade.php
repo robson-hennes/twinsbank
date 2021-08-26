@@ -31,8 +31,8 @@
                 <span class="help-block">{{ trans('cruds.agency.fields.agency_code_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="bank_id">{{ trans('cruds.agency.fields.bank') }}</label>
-                <select class="form-control select2 {{ $errors->has('bank') ? 'is-invalid' : '' }}" name="bank_id" id="bank_id">
+                <label class="required" for="bank_id">{{ trans('cruds.agency.fields.bank') }}</label>
+                <select class="form-control select2 {{ $errors->has('bank') ? 'is-invalid' : '' }}" name="bank_id" id="bank_id" required>
                     @foreach($banks as $id => $entry)
                         <option value="{{ $id }}" {{ (old('bank_id') ? old('bank_id') : $agency->bank->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
                     @endforeach

@@ -27,6 +27,10 @@ class UpdateAgencyRequest extends FormRequest
                 'max:5',
                 'nullable',
             ],
+            'bank_id' => [
+                'required',
+                'integer',
+            ],
         ];
     }
 }

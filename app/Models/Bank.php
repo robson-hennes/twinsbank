@@ -29,8 +29,8 @@ class Bank extends Model implements HasMedia
     ];
 
     protected $fillable = [
-        'name',
         'bank_code',
+        'name',
         'created_at',
         'updated_at',
         'deleted_at',

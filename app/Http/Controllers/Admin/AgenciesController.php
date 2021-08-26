@@ -11,16 +11,55 @@ use App\Models\Bank;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\Facades\DataTables;
 
 class AgenciesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         abort_if(Gate::denies('agency_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $agencies = Agency::with(['bank'])->get();
+        if ($request->ajax()) {
+            $query = Agency::with(['bank'])->select(sprintf('%s.*', (new Agency())->table));
+            $table = Datatables::of($query);
 
-        return view('admin.agencies.index', compact('agencies'));
+            $table->addColumn('placeholder', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
+
+            $table->editColumn('actions', function ($row) {
+                $viewGate = 'agency_show';
+                $editGate = 'agency_edit';
+                $deleteGate = 'agency_delete';
+                $crudRoutePart = 'agencies';
+
+                return view('partials.datatablesActions', compact(
+                'viewGate',
+                'editGate',
+                'deleteGate',
+                'crudRoutePart',
+                'row'
+            ));
+            });
+
+            $table->editColumn('id', function ($row) {
+                return $row->id ? $row->id : '';
+            });
+            $table->editColumn('name', function ($row) {
+                return $row->name ? $row->name : '';
+            });
+            $table->editColumn('agency_code', function ($row) {
+                return $row->agency_code ? $row->agency_code : '';
+            });
+            $table->addColumn('bank_name', function ($row) {
+                return $row->bank ? $row->bank->name : '';
+            });
+
+            $table->rawColumns(['actions', 'placeholder', 'bank']);
+
+            return $table->make(true);
+        }
+
+        return view('admin.agencies.index');
     }
 
     public function create()
